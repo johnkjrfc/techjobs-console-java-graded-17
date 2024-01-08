@@ -75,7 +75,7 @@ public class JobData {
 
             String aValue = row.get(column);
 
-            if (aValue.contains(value)) {
+            if (aValue.toLowerCase().contains(value.toLowerCase())) {
                 jobs.add(row);
             }
         }
@@ -90,12 +90,36 @@ public class JobData {
      * @return      List of all jobs with at least one field containing the value
      */
     public static ArrayList<HashMap<String, String>> findByValue(String value) {
+        //System.out.println("findByValue method called");
 
         // load data, if not already loaded
         loadData();
+        //System.out.println("Loaded data, allJobs size: " + allJobs.size());
+        ArrayList<HashMap<String, String>> searchMatches = new ArrayList<>();
+//        value = value.trim().toLowerCase();
+        //System.out.println("Searching for: " + value);
 
-        // TODO - implement this method
-        return null;
+        for (HashMap<String, String> row : allJobs) {
+            for (String key : row.keySet()) {
+                String columnValue = row.get(key);
+
+                if (columnValue != null) {
+//                    columnValue = columnValue.trim().toLowerCase();
+                    //
+                    //System.out.println("comparing: " + columnValue.toLowerCase() + " with: " + value.toLowerCase());
+                    if (columnValue.toLowerCase().contains(value.toLowerCase())) {
+                        if (!searchMatches.contains(row)) {
+                            searchMatches.add(row);
+                            break;
+                        }
+                    }
+
+                }
+            }
+        }
+
+
+        return searchMatches;
     }
 
     /**
